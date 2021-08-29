@@ -27,8 +27,25 @@ const getAll = async () =>{
     return projects
 }
 
-const getById = (project_id) =>{
-    return db("projects").where("project_id", project_id).first()
+const getById = async (project_id) =>{
+    const project = await db("projects").where("project_id", project_id).first()
+
+    if (project.project_completed === 0){
+        return { 
+            project_id: project.project_id ,
+            project_name: project.project_name,
+            project_description: project.project_description,
+            project_completed: false
+        }
+    }
+    else{
+        return{
+            project_id: project.project_id ,
+            project_name: project.project_name,
+            project_description: project.project_description,
+            project_completed: true
+        }
+    }
 }
 
 const create = async (project) =>{
